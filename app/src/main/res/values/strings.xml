@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">CalculadoraIOS</string>
+
+    <!-- Pantallas -->
+    <string name="calculator_title">Calculadora</string>
+    <string name="history_title">Historial</string>
+    <string name="history_empty">No hay cálculos registrados</string>
+
+    <!-- Botones -->
+    <string name="button_clear">AC</string>
+    <string name="button_percent">%</string>
+    <string name="button_sign">+/-</string>
+    <string name="button_equals">=</string>
+
+    <!-- Operaciones -->
+    <string name="operation_add">+</string>
+    <string name="operation_subtract">−</string>
+    <string name="operation_multiply">×</string>
+    <string name="operation_divide">÷</string>
+
+    <!-- Errores -->
+    <string name="error_division_zero">No se puede dividir entre cero</string>
+    <string name="error_invalid_operation">Operación no válida</string>
+</resources>

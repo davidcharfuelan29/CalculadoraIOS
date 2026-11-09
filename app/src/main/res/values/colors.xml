@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Colores principales -->
+    <color name="calculator_background">#000000</color>
+    <color name="calculator_display">#1C1C1C</color>
+
+    <!-- Botones -->
+    <color name="button_number">#333333</color>
+    <color name="button_function">#A5A5A5</color>
+    <color name="button_operator">#FF9500</color>
+
+    <!-- Textos -->
+    <color name="text_primary">#FFFFFF</color>
+    <color name="text_secondary">#BDBDBD</color>
+</resources>
