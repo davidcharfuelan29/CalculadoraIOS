@@ -22,6 +22,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -38,14 +42,31 @@ fun ShowCalculator(
     BoxWithConstraints(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Black)
+            .background(colorResource(R.color.calculator_background))
             .safeDrawingPadding()
     ) {
 
         val sideMargin = maxWidth * 0.082f
-        val gap = maxWidth * 0.0175f
+        val gap = maxWidth * 0.03f
         val buttonSize = (maxWidth - sideMargin * 2 - gap * 3) / 4
         val bottomMargin = maxWidth * 0.17f
+
+        val buttonNumberColor = colorResource(R.color.button_number)
+        val buttonFunctionDarkColor = colorResource(R.color.button_function_dark)
+        val buttonOperatorColor = colorResource(R.color.button_operator)
+        val buttonHistoryColor = colorResource(R.color.button_history)
+        val textPrimaryColor = colorResource(R.color.text_primary)
+        val textTertiaryColor = colorResource(R.color.text_tertiary)
+        val clearText = stringResource(R.string.button_clear)
+        val percentText = stringResource(R.string.button_percent)
+        val signText = stringResource(R.string.button_sign)
+        val equalsText = stringResource(R.string.button_equals)
+        val addText = stringResource(R.string.operation_add)
+        val subtractText = stringResource(R.string.operation_subtract)
+        val multiplyText = stringResource(R.string.operation_multiply)
+        val divideText = stringResource(R.string.operation_divide)
+        val historyButtonText = stringResource(R.string.button_history)
+        val historyButtonDesc = stringResource(R.string.history_title)
 
         Column(
             modifier = Modifier.fillMaxSize()
@@ -56,16 +77,17 @@ fun ShowCalculator(
                 onClick = onHistoryClick,
                 modifier = Modifier
                     .padding(start = sideMargin, top = 8.dp)
-                    .size(48.dp),
+                    .size(48.dp)
+                    .semantics { contentDescription = historyButtonDesc },
                 shape = CircleShape,
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF2C2C2E)
+                    containerColor = buttonHistoryColor
                 ),
                 contentPadding = PaddingValues(0.dp)
             ) {
                 Text(
-                    text = "↶",
-                    color = Color.White,
+                    text = historyButtonText,
+                    color = textPrimaryColor,
                     fontSize = 25.sp
                 )
             }
@@ -78,20 +100,31 @@ fun ShowCalculator(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = sideMargin),
-                color = Color(0xFF8E8E93),
+                color = textTertiaryColor,
                 fontSize = 20.sp,
                 textAlign = TextAlign.End,
                 maxLines = 1,
                 softWrap = false
             )
 
-            // Resultado en blanco
+            // Resultado en blanco (o mensaje de error)
+            val errorCode = viewModel.error.value
+            val displayResult = if (errorCode.isNotEmpty()) {
+                when (errorCode) {
+                    "error_division_zero" -> stringResource(R.string.error_division_zero)
+                    "error_invalid_operation" -> stringResource(R.string.error_invalid_operation)
+                    else -> errorCode
+                }
+            } else {
+                viewModel.result.value
+            }
+
             Text(
-                text = result,
+                text = displayResult,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = sideMargin),
-                color = Color.White,
+                color = textPrimaryColor,
                 fontSize = 55.sp,
                 textAlign = TextAlign.End,
                 maxLines = 1,
@@ -102,80 +135,80 @@ fun ShowCalculator(
 
             // Primera fila
             CalculatorRow(sideMargin, gap) {
-                CalculatorButton("⌫", Color(0xFF636366), buttonSize) {
+                CalculatorButton("⌫", buttonFunctionDarkColor, buttonSize) {
                     viewModel.deleteLastCharacter()
                 }
-                CalculatorButton("AC", Color(0xFF636366), buttonSize) {
+                CalculatorButton(clearText, buttonFunctionDarkColor, buttonSize) {
                     viewModel.clearCalculator()
                 }
-                CalculatorButton("%", Color(0xFF636366), buttonSize) {
+                CalculatorButton(percentText, buttonFunctionDarkColor, buttonSize) {
                     viewModel.manageClickButtons("%")
                 }
-                CalculatorButton("÷", Color(0xFFFF9500), buttonSize) {
+                CalculatorButton(divideText, buttonOperatorColor, buttonSize) {
                     viewModel.manageClickButtons("÷")
                 }
             }
 
             // Segunda fila
             CalculatorRow(sideMargin, gap) {
-                CalculatorButton("7", Color(0xFF333333), buttonSize) {
+                CalculatorButton("7", buttonNumberColor, buttonSize) {
                     viewModel.manageClickButtons("7")
                 }
-                CalculatorButton("8", Color(0xFF333333), buttonSize) {
+                CalculatorButton("8", buttonNumberColor, buttonSize) {
                     viewModel.manageClickButtons("8")
                 }
-                CalculatorButton("9", Color(0xFF333333), buttonSize) {
+                CalculatorButton("9", buttonNumberColor, buttonSize) {
                     viewModel.manageClickButtons("9")
                 }
-                CalculatorButton("×", Color(0xFFFF9500), buttonSize) {
+                CalculatorButton(multiplyText, buttonOperatorColor, buttonSize) {
                     viewModel.manageClickButtons("×")
                 }
             }
 
             // Tercera fila
             CalculatorRow(sideMargin, gap) {
-                CalculatorButton("4", Color(0xFF333333), buttonSize) {
+                CalculatorButton("4", buttonNumberColor, buttonSize) {
                     viewModel.manageClickButtons("4")
                 }
-                CalculatorButton("5", Color(0xFF333333), buttonSize) {
+                CalculatorButton("5", buttonNumberColor, buttonSize) {
                     viewModel.manageClickButtons("5")
                 }
-                CalculatorButton("6", Color(0xFF333333), buttonSize) {
+                CalculatorButton("6", buttonNumberColor, buttonSize) {
                     viewModel.manageClickButtons("6")
                 }
-                CalculatorButton("−", Color(0xFFFF9500), buttonSize) {
+                CalculatorButton(subtractText, buttonOperatorColor, buttonSize) {
                     viewModel.manageClickButtons("-")
                 }
             }
 
             // Cuarta fila
             CalculatorRow(sideMargin, gap) {
-                CalculatorButton("1", Color(0xFF333333), buttonSize) {
+                CalculatorButton("1", buttonNumberColor, buttonSize) {
                     viewModel.manageClickButtons("1")
                 }
-                CalculatorButton("2", Color(0xFF333333), buttonSize) {
+                CalculatorButton("2", buttonNumberColor, buttonSize) {
                     viewModel.manageClickButtons("2")
                 }
-                CalculatorButton("3", Color(0xFF333333), buttonSize) {
+                CalculatorButton("3", buttonNumberColor, buttonSize) {
                     viewModel.manageClickButtons("3")
                 }
-                CalculatorButton("+", Color(0xFFFF9500), buttonSize) {
+                CalculatorButton(addText, buttonOperatorColor, buttonSize) {
                     viewModel.manageClickButtons("+")
                 }
             }
 
             // Quinta fila
             CalculatorRow(sideMargin, gap) {
-                CalculatorButton("±", Color(0xFF333333), buttonSize) {
+                CalculatorButton(signText, buttonNumberColor, buttonSize) {
                     viewModel.changeSign()
                 }
-                CalculatorButton("0", Color(0xFF333333), buttonSize) {
+                CalculatorButton("0", buttonNumberColor, buttonSize) {
                     viewModel.manageClickButtons("0")
                 }
-                CalculatorButton(".", Color(0xFF333333), buttonSize) {
+                CalculatorButton(".", buttonNumberColor, buttonSize) {
                     viewModel.manageClickButtons(".")
                 }
-                CalculatorButton("=", Color(0xFFFF9500), buttonSize) {
+                CalculatorButton(equalsText, buttonOperatorColor, buttonSize) {
                     viewModel.showResult()
                 }
             }
@@ -219,8 +252,8 @@ fun CalculatorButton(
     ) {
         Text(
             text = text,
-            fontSize = 23.sp,
-            color = Color.White,
+            fontSize = 27.sp,
+            color = colorResource(R.color.text_primary),
             maxLines = 1
         )
     }

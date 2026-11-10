@@ -14,7 +14,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -27,22 +28,22 @@ fun ShowHistory(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Black)
+            .background(colorResource(R.color.calculator_background))
             .padding(20.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
         Text(
-            text = "Historial",
-            color = Color.White,
+            text = stringResource(R.string.history_title),
+            color = colorResource(R.color.text_primary),
             fontSize = 30.sp
         )
 
         if (viewModel.history.isEmpty()) {
 
             Text(
-                text = "No hay cálculos registrados",
-                color = Color.Gray,
+                text = stringResource(R.string.history_empty),
+                color = colorResource(R.color.text_secondary),
                 fontSize = 18.sp,
                 modifier = Modifier.padding(top = 20.dp)
             )
@@ -61,7 +62,7 @@ fun ShowHistory(
 
                     Text(
                         text = operation,
-                        color = Color.White,
+                        color = colorResource(R.color.text_primary),
                         fontSize = 20.sp
                     )
                 }
@@ -74,7 +75,7 @@ fun ShowHistory(
                 .fillMaxWidth()
                 .padding(top = 30.dp)
         ) {
-            Text("Volver")
+            Text(stringResource(R.string.button_back))
         }
     }
 }

@@ -12,6 +12,8 @@
     <string name="button_percent">%</string>
     <string name="button_sign">+/-</string>
     <string name="button_equals">=</string>
+    <string name="button_history">↶</string>
+    <string name="button_back">Volver</string>
 
     <!-- Operaciones -->
     <string name="operation_add">+</string>
